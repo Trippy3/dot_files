@@ -1,2 +1,2 @@
 ## dot_files
-This repository manages the dot files I use
+- This repository manages the dot files and setting files I use.
