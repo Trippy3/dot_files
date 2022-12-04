@@ -1,0 +1,198 @@
+# Use Xft?
+use_xft yes
+#xftfont DejaVu Sans:size=9
+xftfont Takao Pゴシック:size=10
+xftalpha 0.8
+text_buffer_size 2048
+
+# Update interval in seconds
+update_interval 1.0
+
+# This is the number of times Conky will update before quitting.
+# Set to zero to run forever.
+total_run_times 0
+
+# Create own window instead of using desktop (required in nautilus)
+own_window_argb_visual true
+own_window_argb_value 200
+##own_window_type desktop
+own_window yes
+own_window_transparent yes
+##own_window_type override
+own_window_type normal
+# own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+# Use double buffering (reduces flicker, may not work for everyone)
+double_buffer yes
+
+# Minimum size of text area
+minimum_size 180 0
+#maximum_width 350
+
+# Draw shades?
+draw_shades yes
+
+# Draw outlines?
+draw_outline no
+
+# Draw borders around text
+draw_borders no
+
+# Stippled borders?
+stippled_borders 0
+
+# border margins
+#border_margin 5
+
+# border width
+border_width 1
+
+# Default colors and also border colors
+default_color white
+#default_shade_color black
+#default_outline_color white
+#own_window_colour white
+
+# Text alignment, other possible values are commented
+#alignment top_left
+alignment top_right
+#alignment bottom_left
+#alignment bottom_right
+
+# Gap between borders of screen and text
+# same thing as passing -x at command line
+gap_x 10
+gap_y 40
+
+# Subtract file system buffers from used memory?
+no_buffers yes
+
+# set to yes if you want all text to be in uppercase
+uppercase no
+
+# number of cpu samples to average
+# set to 1 to disable averaging
+cpu_avg_samples 1
+
+# number of net samples to average
+# set to 1 to disable averaging
+net_avg_samples 1
+
+# Force UTF8? note that UTF8 support required XFT
+override_utf8_locale yes
+
+# Add spaces to keep things from moving about?  This only affects certain objects.
+use_spacer none
+
+# stuff after 'TEXT' will be formatted on screen
+
+TEXT
+#####----------------------SYSTEM--------------------------------
+${color #C2B4FF}${font Ubuntu:style=Bold:size=10}System ${font}${hr 2}
+${voffset 5}${image ./cof_orange_hex.png -p 26,18 -s 32x32}${voffset -7}${color}${alignc}${font Ubuntu:style=Bold:size=9}Ubuntu Raring Ringtail (13.04)
+${voffset 4}${font}${alignr -8}${sysname} ${machine}  
+${voffset 4}Kernel: ${alignr}${kernel}
+${voffset 4}${font}${color}User: ${alignr 26}${font Love Letter Typewriter:size=10}${nodename}
+
+${voffset -20}${color}
+${font}CPU: ${alignr}${execi 99999 cat /proc/cpuinfo | grep "model name" -m1 | cut -d":" -f2 | cut -d" " -f2- | sed 's#Processor ##'}
+${font StyleBats:size=16} ${font} CPU1: ${cpu cpu1} % ${alignr}${cpubar cpu1 8,60}
+${font StyleBats:size=16} ${font} CPU2: ${cpu cpu2} % ${alignr}${cpubar cpu2 8,60}
+${font StyleBats:size=16} ${font} CPU3: ${cpu cpu3} % ${alignr}${cpubar cpu3 8,60}
+${font StyleBats:size=16} ${font} CPU4: ${cpu cpu4} % ${alignr}${cpubar cpu4 8,60}
+${font StyleBats:size=16} ${font} RAM: $memperc % ${alignr}${membar 8,60}
+${font StyleBats:size=16} ${font} SWAP: $swapperc % ${alignr}${swapbar 8,60}
+
+Highest ${color magenta} CPU ${color}: $alignr CPU% MEM%
+${font StyleBats:size=16} ${font}${color} ${top name 1}$alignr${top cpu 1} ${top mem 1}
+${font StyleBats:size=16} ${font}${color} ${top name 2}$alignr${top cpu 2} ${top mem 2}
+${font StyleBats:size=16} ${font}${color} ${top name 3}$alignr${top cpu 3} ${top mem 3}
+${font StyleBats:size=16} ${font}${color} ${top name 4}$alignr${top cpu 4} ${top mem 4}
+
+Highest ${color cyan} MEM ${color}: $alignr CPU% MEM%
+${font StyleBats:size=16} ${font}${color} ${top_mem name 1}$alignr${top_mem cpu 1} ${top_mem mem 1}
+${font StyleBats:size=16} ${font}${color} ${top_mem name 2}$alignr${top_mem cpu 2} ${top_mem mem 2}
+${font StyleBats:size=16} ${font}${color} ${top_mem name 3}$alignr${top_mem cpu 3} ${top_mem mem 3}
+
+Video: ${color green}${alignc}GPU ${color}@ ${nvidia gpufreq} MHz ${color cyan}${alignr}MEM ${color}@ ${nvidia memfreq} MHz
+
+Entropy: ${alignc}${entropy_avail} / ${entropy_poolsize} ${color}${alignr}${entropy_bar 8, 60}
+
+####-------------------------TEMPERATURE-------------------------------------
+${voffset -20}
+${color #FFA3D0}${font Ubuntu:style=Bold:size=10}Temperature ${font}${hr 2}
+${font StyleBats:size=16} ${font}${color} CPU: ${alignr}${color #E0E012}${hwmon temp 1} ℃
+${font StyleBats:size=16} ${font}${color} GPU: ${alignr}${color #E0E012}${nvidia temp} ℃
+${font StyleBats:size=16} ${font}${color} M/B: ${alignr}${color #E0E012}${hwmon temp 2} ℃
+${color}
+
+####-----------------------------FAN-----------------------------------------
+${voffset -35}
+${color #FFAB9C}${font Ubuntu:style=Bold:size=10}Fan ${font}${hr 2}
+${font StyleBats:size=16} ${font}${color} CPU: ${alignr}${color #6F6FFF}${execi 60 sensors | grep 'CPU FAN Speed' | cut -c20-24 | sed '/^$/d'} rpm
+${font StyleBats:size=16} ${font}${color} Chip: ${alignr}${color #6F6FFF}${execi 60 sensors | grep 'CHASSIS1 FAN Speed' | cut -c20-24 | sed '/^$/d'} rpm
+# ${font StyleBats:size=16} ${font}Chip: ${alignr}${color yellow}${hwmon fan 2}rpm
+# ${font StyleBats:size=16} ${font}Case: ${alignr}${color yellow}${hwmon fan 3}rpm
+${color}
+
+####--------------------------STORAGE-----------------------------------------
+${voffset -35}
+${color #FFE19C}${font Ubuntu:style=Bold:size=10}Storage ${font}${hr 2} ${color}
+${voffset 2}${font Pie charts for maps:size=14}${font}   HDD [free / total]:
+${voffset 6}${offset 12}${color #E0E012}${fs_free /home} ${color}/ ${fs_size /home} (${fs_free_perc /}%)${alignr}${color}${fs_bar 8,60 /home}
+
+####---------------------------NETWORK----------------------------------------
+${voffset -20}
+${color #9FED9E}${font Ubuntu:style=Bold:size=10}Network ${font}${hr 2}
+${color} ${voffset -24}
+${if_existing /proc/net/route wlan0}
+${voffset -4}${font PizzaDude Bullets:size=14}${font}   Up: ${upspeed wlan0} kb/s ${alignr}${upspeedgraph wlan0 8,60 F57900 FCAF3E}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Down: ${downspeed wlan0} kb/s ${alignr}${downspeedgraph wlan0 8,60 F57900 FCAF3E}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Upload: ${alignr}${totalup wlan0}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Download: ${alignr}${totaldown wlan0}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Signal: ${wireless_link_qual wlan0}% ${alignr}${wireless_link_bar 8,60 wlan0}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Local Ip: ${alignr}${addr wlan0}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Public Ip: ${alignr}${execi 1000 wget -q -O - ipcheck.ieserver.net}
+${else}${if_existing /proc/net/route eth0}
+${voffset -4}${font PizzaDude Bullets:size=14}${font}   Up: ${alignc}${upspeed eth0} kb/s ${alignr}${upspeedgraph eth0 8,60 F57900 FCAF3E}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Down: ${alignc}${downspeed eth0} kb/s ${alignr}${downspeedgraph eth0 8,60 F57900 FCAF3E}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Upload: ${alignr}${totalup eth0}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Download: ${alignr}${totaldown eth0}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Local Ip: ${alignr}${addr eth0}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Public Ip: ${alignr}${execi 12000 wget -q -O - ipcheck.ieserver.net}
+${else}${if_existing /proc/net/route eth1}
+${voffset -4}${font PizzaDude Bullets:size=14}${font}   Up: ${upspeed eth1} kb/s ${alignr}${upspeedgraph eth1 8,60 F57900 FCAF3E}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Down: ${downspeed eth1} kb/s ${alignr}${downspeedgraph eth1 8,60 F57900 FCAF3E}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Upload: ${alignr}${totalup eth1}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Download: ${alignr}${totaldown eth1}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Local Ip: ${alignr}${addr eth1}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Public Ip: ${alignr}${execi 1000 wget -q -O - ipcheck.ieserver.net}
+${else}
+${font PizzaDude Bullets:size=14}4${font}   Network Unavailable
+${endif}
+${endif}
+${endif}
+
+####------------------------------MUSIC-----------------------------------------------
+${voffset -35}
+${color #B4E7FF}${font Ubuntu:style=Bold:size=10}Music ${font}${hr 2}
+${color}
+${if_running mocp} ${voffset -34}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   State:${alignr}${execp mocp -Q '%state      %ct / %tt'} ${voffset -2}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Title:${alignr}${execp mocp -Q '%song'}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Artist:${alignr}${execp mocp -Q '%artist'}
+${voffset 4}${font PizzaDude Bullets:size=14}${font}   Bitrate:${alignr}${execp mocp -Q '%b kbps'}
+${voffset 4}
+${else}
+${voffset -20}${font PizzaDude Bullets:size=14}${font}   ${alignc}WAIT :: Music On Console
+${endif}
+#####---------------------------------------------------------------------------
+${voffset -30}
+${color #FFA3D0}${hr 2}${voffset -12}
+${color #FFAB9C}${hr 2}${voffset -12}
+${color #FFE19C}${hr 2}${voffset -12}
+${color #9FED9E}${hr 2}${voffset -12}
+${color #B4E7FF}${hr 2}${voffset -12}
+${color #91B3FF}${hr 2}${voffset -12}
+${color #C2B4FF}${hr 2}
